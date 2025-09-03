@@ -12,10 +12,10 @@
 
 ### Implementation
 
-- [ ] **BaseLinearRegression** class
+- [x] **BaseLinearRegression** class
 
-  - [ ] `fit`, `predict`, `score` methods
-  - [ ] `coef_`, `intercept_`, `fit_intercept` attributes
+  - [x] `fit`, `predict`, `score` methods
+  - [x] `coef_`, `intercept_`, `fit_intercept` attributes
 
 - [ ] **LinearRegressionGD** class (Gradient Descent)
 
