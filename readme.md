@@ -1,3 +1,13 @@
+# Testing
+
+### Running Tests
+
+```
+ pytest -q
+```
+
+---
+
 # Deliverables Checklist
 
 ### Implementation
