@@ -16,6 +16,7 @@
 
   - [x] load data succesfully
   - [ ] split into training and testing data
+  - [ ] how to call normally
 
 - [x] **BaseLinearRegression** class
 
