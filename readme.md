@@ -12,6 +12,11 @@
 
 ### Implementation
 
+- [ ] **Main** class
+
+  - [x] load data succesfully
+  - [ ] split into training and testing data
+
 - [x] **BaseLinearRegression** class
 
   - [x] `fit`, `predict`, `score` methods
@@ -22,6 +27,9 @@
   - [ ] Supports `learning_rate`, `max_iter`, `batch_size`, `random_state`
   - [ ] Uses SSE cost function
   - [ ] Tracks `cost_history_`
+  - [ ] fit
+    - [x] handle fit_intercept = true
+    - [ ] how to use mini batches
 
 - [ ] **LinearRegressionNE** class (Normal Equation)
   - [ ] Implements closed-form solution
