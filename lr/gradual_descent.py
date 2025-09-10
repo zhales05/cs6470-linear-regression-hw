@@ -89,14 +89,15 @@ class LinearRegressionGD(BaseLinearRegression):
         pass
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> 'LinearRegressionGD':
-        np.random.seed(self.random_state)
-
-
-        # theta is what we are trying to figure out. We start with random coeeficients or weights
-        # np arrays have a tuple that contains the number of rows and columns. We want to get the number of features or columns here.
-        # There will always be only 1 row
-        # I am adding the value of the fit_intercept boolean to the size of the array to account for the extra column if necessary
-        theta = np.random.rand(X.shape[1] + self.fit_intercept, 1)
+         # Validate and preprocess input
+        X, y = self._validate_input(X, y)
+        
+        # Add intercept column if needed
+        X = self._add_intercept(X)
+        
+        # Initialize theta (now with correct dimensions)
+        theta = np.random.rand(X.shape[1], 1)
+            
         """
         Fit the model using gradient descent.
 

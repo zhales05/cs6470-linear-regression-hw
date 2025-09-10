@@ -40,12 +40,39 @@ class BaseLinearRegression(ABC):
         y_processed : np.ndarray or None
             Processed target vector
         """
-        # Convert to numpy array
-        pass
+        # Convert to numpy arrays
+        X = np.asarray(X)
+        if y is not None:
+            y = np.asarray(y)
+        
+        # Validate X shape
+        if X.ndim != 2:
+            raise ValueError(f"X must be 2D array, got {X.ndim}D")
+        
+        # Validate y shape if provided
+        if y is not None:
+            if y.ndim != 1:
+                raise ValueError(f"y must be 1D array, got {y.ndim}D")
+            if X.shape[0] != y.shape[0]:
+                raise ValueError(f"X and y must have same number of samples: {X.shape[0]} vs {y.shape[0]}")
+        
+        # Check for NaN/infinite values
+        if not np.isfinite(X).all():
+            raise ValueError("X contains NaN or infinite values")
+        if y is not None and not np.isfinite(y).all():
+            raise ValueError("y contains NaN or infinite values")
+        
+        # Set number of features
+        self.n_features_in_ = X.shape[1]
+        
+        return X, y
     
     def _add_intercept(self, X: np.ndarray) -> np.ndarray:
         """Add intercept column to feature matrix if fit_intercept is True."""
-        pass
+        if self.fit_intercept:
+            ones = np.ones((X.shape[0], 1))
+            return np.hstack([ones, X])
+        return X
     
     @abstractmethod
     def fit(self, X: np.ndarray, y: np.ndarray) -> 'BaseLinearRegression':

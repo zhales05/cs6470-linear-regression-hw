@@ -15,13 +15,17 @@
 - [ ] **Main** class
 
   - [x] load data succesfully
-  - [ ] split into training and testing data
+  - [x] split into training and testing data
   - [ ] how to call normally
 
 - [x] **BaseLinearRegression** class
 
-  - [x] `fit`, `predict`, `score` methods
+  - [x] `fit`
+  - [ ]`predict`
+  - [ ] `score`
   - [x] `coef_`, `intercept_`, `fit_intercept` attributes
+  - [x] `_add_intercept`
+  - [x] `validate input`
 
 - [ ] **LinearRegressionGD** class (Gradient Descent)
 
