@@ -92,7 +92,7 @@ class BaseLinearRegression(ABC):
             Returns self for method chaining
         """
         pass
-    
+    # seems like this will be used with testing data not training data
     def predict(self, X: np.ndarray) -> np.ndarray:
         """
         Make predictions using the linear model.
@@ -107,11 +107,24 @@ class BaseLinearRegression(ABC):
         y_pred : np.ndarray of shape (n_samples,)
             Predicted values
         """
-        # Check if model is fitted
+        if self.coef_ is None:
+            raise ValueError("model not fitted yet")
         
-        # Make predictions
+        # validate again just in case
+        X, _ = self._validate_input(X)
         
-        pass
+        # remember this is new data NOT the training data
+        X = self._add_intercept(X)
+        
+        # dot multiplication shorthand 
+        if self.fit_intercept:
+            # coef_ has feature weights, intercept_ has bias
+            predictions = X[:, 1:] @ self.coef_ + self.intercept_
+        else:
+            predictions = X @ self.coef_
+        
+        return predictions.flatten()
+
     
     def score(self, X: np.ndarray, y: np.ndarray) -> float:
         """
@@ -129,4 +142,16 @@ class BaseLinearRegression(ABC):
         score : float
             R score
         """
-        pass
+        y_pred = self.predict(X)
+        # calculates the residual sum of squares
+        # so actual - prediction summated and then squared to get absolute value
+        ss_res = np.sum((y - y_pred) ** 2)
+        
+        # calculates ss_tot which is the variance already baked into the dataset
+        y_mean = np.mean(y)
+        ss_tot = np.sum((y - y_mean) ** 2)
+        
+        # current model over worst model in terms of a percentage
+        return 1 - (ss_res / ss_tot)
+
+

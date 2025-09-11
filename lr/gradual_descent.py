@@ -57,9 +57,11 @@ class LinearRegressionGD(BaseLinearRegression):
         cost : float
             SSE cost value
         """
-        # TODO: Implement SSE cost function
         # J(theta) = (1/2m) * sum((X @ theta - y)^2)
-        pass
+        m = X.shape[0]  # number of samples
+        predictions = X @ theta
+        cost = (1/(2 * m)) * np.sum((predictions - y.reshape(-1,1))**2)
+        return cost
 
     def _compute_gradients(self, X: np.ndarray, y: np.ndarray, theta: np.ndarray) -> np.ndarray:
         """
@@ -79,8 +81,12 @@ class LinearRegressionGD(BaseLinearRegression):
         gradients : np.ndarray
             Gradient vector
         """
-        # TODO: Implement gradient computation
-        pass
+        m = X.shape[0]
+        predictions = X @ theta
+        error = predictions - y.reshape(-1, 1)
+        # partial deriviative via matrix
+        gradients = (1/m) * X.T @ error
+        return gradients
 
     def _get_mini_batches(self, X: np.ndarray, y: np.ndarray) -> list:
         """Generate mini-batches for stochastic gradient descent."""
@@ -89,15 +95,6 @@ class LinearRegressionGD(BaseLinearRegression):
         pass
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> 'LinearRegressionGD':
-         # Validate and preprocess input
-        X, y = self._validate_input(X, y)
-        
-        # Add intercept column if needed
-        X = self._add_intercept(X)
-        
-        # Initialize theta (now with correct dimensions)
-        theta = np.random.rand(X.shape[1], 1)
-            
         """
         Fit the model using gradient descent.
 
@@ -113,5 +110,44 @@ class LinearRegressionGD(BaseLinearRegression):
         self : LinearRegressionGD
             Returns self for method chaining
         """
+        np.random.seed(self.random_state)
+
+        # Validate and preprocess input
+        X, y = self._validate_input(X, y)
+        
+        # Add intercept column if needed
+        X = self._add_intercept(X)
+        
+        # Initialize theta to zeros (safe start)
+        theta = np.zeros((X.shape[1], 1))
+            
+        for i in range(self.max_iter):
+            # current cost
+            current_cost = self._compute_cost(X, y, theta)
+            self.cost_history_.append(current_cost)
+
+            # which way do I move
+            gradients = self._compute_gradients(X, y, theta)
+            
+            # update thetas
+            theta = theta - self.learning_rate * gradients
+            
+            # Check for NaN
+            if np.isnan(theta).any():
+                print(f"NaN detected at iteration {i}")
+                break
+            
+            if len(self.cost_history_) > 1:
+                cost_change = abs(self.cost_history_[-2] - current_cost)
+                if cost_change < self.tol:
+                    break
+                
+        if self.fit_intercept:
+            self.intercept_ = theta[0, 0]  
+            self.coef_ = theta[1:, :]     
+        else:
+            self.coef_ = theta
+        
+        self.n_iter_ = i + 1
 
         return self

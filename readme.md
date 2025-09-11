@@ -21,8 +21,8 @@
 - [x] **BaseLinearRegression** class
 
   - [x] `fit`
-  - [ ]`predict`
-  - [ ] `score`
+  - [x]`predict`
+  - [x] `score`
   - [x] `coef_`, `intercept_`, `fit_intercept` attributes
   - [x] `_add_intercept`
   - [x] `validate input`
