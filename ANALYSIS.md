@@ -53,7 +53,7 @@ I implemented **full-batch gradient descent**, using all training samples in eac
 
 I used: `J(θ) = (1/2m) * Σ(ŷ - y)²`
 
-This is a **hybrid approach** combining benefits of both SSE and MSE.
+This is a scaled MSE.
 
 ### Cost Function Comparison
 
@@ -73,14 +73,6 @@ This is a **hybrid approach** combining benefits of both SSE and MSE.
 - Consistent across different dataset sizes
 - Learning rates more transferable
 - **Cons:** Slightly more computation per iteration
-
-**Hybrid: (1/2m) _ SSE = (1/2) _ MSE**
-
-- **Best of both worlds:**
-  - The `1/2` factor simplifies derivatives
-  - The `1/m` factor normalizes by sample size
-  - Clean gradient computation: `∇J = (1/m) * X^T @ (Xθ - y)`
-  - Interpretable cost values
 
 ## **Coefficient Comparison Analysis**
 
